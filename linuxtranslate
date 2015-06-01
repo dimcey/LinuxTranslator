@@ -1,0 +1,5 @@
+#!/bin/sh
+read IN
+curl -s "http://semes-olla.rhcloud.com/word?$IN&Swadesh/Slavic/Macedonian.py"
+EXIT_STATUS=$?
+exit $EXIT_STATUS

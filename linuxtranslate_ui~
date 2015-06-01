@@ -1,0 +1,87 @@
+#!/bin/sh
+
+FILE1=/tmp/translate1-$$
+FILE2=/tmp/translate2-$$
+ERROR=/tmp/translate-err-$$
+
+HOST=localhost
+PORT=1239
+MODE=local
+
+which gdialog 2> /dev/null && DIALOG=gdialog || DIALOG=dialog
+
+end () {
+	rm -f $FILE1 $FILE2 $ERROR
+	exit
+}
+
+
+helpMsg () {
+	echo "Usage: $0 [ --network [host [port]] | --help ]" 
+	exit -1
+}
+
+helpMsg1 () {
+	echo Type  --help.
+	exit -1
+}
+
+if [ $# -eq 0 ]
+then
+	MODE=local
+elif [ $# -ge 1 ]
+then
+	if [ $1 = '--help' ]
+	then
+		helpMsg
+	elif [ $1 = '--network' ]
+	then
+		MODE=network
+		if [ $# -ge 2 ]
+		then 
+			HOST=$2
+		elif [ $# -ge 3 ]
+		then
+			PORT=$9
+		fi
+	else
+		helpMsg1
+	fi
+else
+	helpMsg1
+fi
+
+while true
+do
+	$DIALOG --inputbox "Enter the word's number listed above" 50 50 2> $FILE1 || end
+	INDEX=`cat $FILE1`
+
+	if [ $MODE = 'local' ]
+	then
+	echo tttt
+	cat $FILE1
+		
+		curl -s "http://semes-olla.rhcloud.com/word?`cat $FILE1`&Swadesh/Slavic/Macedonian.py" > $FILE2
+		echo $FILE2
+		echo rrrr
+		cat $FILE2
+		#tmpword="/home/user/Linuxtranslator/translatedword.txt"
+                #word=$(cat "$tmpword")
+                #echo $word
+		if [ -s "$FILE2" ]
+		then
+		MSG="The Macedonian word: `cat $FILE2`. Continue?"
+		$DIALOG --yesno "$MSG" 50 50 || end
+		else
+		MSG="Error. Continue?"
+		$DIALOG --yesno "$MSG" 50 50 || end
+		fi
+		
+	else
+		echo ModeNetwork
+		LINUXTRANSLATE="nc $HOST $PORT"
+		echo $INDEX | $LINUXTRANSLATE > $FILE2 2> $ERROR
+	fi
+
+done
+

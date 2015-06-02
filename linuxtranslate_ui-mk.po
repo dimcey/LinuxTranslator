@@ -1,12 +1,12 @@
 
-msgid "Enter the word number listed above"
-msgstr "Vnesete go brojot na zborot od gore"
+msgid "Pick a word and enter his number"
+msgstr "Внесете го бројот на зборот"
 
 msgid "The Macedonian translation"
-msgstr "Makedonskiot prevod na zborot e "
+msgstr "Македонскиот превод е"
 
 msgid "Continue?"
-msgstr "Prodolzhi?"
+msgstr "Продолжи?"
 
 msgid "Error"
-msgstr "Greshka"
+msgstr "Грешка"

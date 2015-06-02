@@ -60,7 +60,7 @@ curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | paste - - - -
 
 while true
 do
-	$DIALOG --inputbox "`cat $FILE3` \\n\\n `$GETTEXT \"Pick a word and enter his number\"`" 0 0 2> $FILE1 || end
+	$DIALOG --inputbox "`cat $FILE3` \\n\\n `$GETTEXT \"Enter the word number listed above\"`" 0 0 2> $FILE1 || end
 	INDEX=`cat $FILE1`
 
 	if [ $MODE = 'local' ]

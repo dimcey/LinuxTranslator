@@ -1,14 +1,17 @@
 #!/bin/sh
 
-FILE1=/tmp/translate1-$$
-FILE2=/tmp/translate2-$$
-ERROR=/tmp/translate-err-$$
+FILE1=/tmp/linuxtranslate1-$$
+FILE2=/tmp/linuxtranslate2-$$
+FILE3=/tmp/linuxtranslate3-$$
+ERROR=/tmp/linuxtranslate-err-$$
 
 HOST=localhost
 PORT=1239
 MODE=local
 
 which gdialog 2> /dev/null && DIALOG=gdialog || DIALOG=dialog
+
+GETTEXT="gettext -d linuxtranslate_ui"
 
 end () {
 	rm -f $FILE1 $FILE2 $ERROR
@@ -51,9 +54,13 @@ else
 	helpMsg1
 fi
 
+#curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | tr '\n' ', ' | tr -d '\n' | tr -d '<*>' > $FILE3
+curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | paste - - - - - - - | tr -d '<*>' > $FILE3
+ 
+
 while true
 do
-	$DIALOG --inputbox "Enter the word's number listed above" 50 50 2> $FILE1 || end
+	$DIALOG --inputbox "`cat $FILE3` `\\n\\n` `$GETTEXT \"Enter the word number listed above\"`" 0 0 2> $FILE1 || end
 	INDEX=`cat $FILE1`
 
 	if [ $MODE = 'local' ]
@@ -70,11 +77,11 @@ do
                 #echo $word
 		if [ -s "$FILE2" ]
 		then
-		MSG="The Macedonian word: `cat $FILE2`. Continue?"
-		$DIALOG --yesno "$MSG" 50 50 || end
+		MSG="`$GETTEXT \"The Macedonian translation\"` `cat $FILE2`. Continue?"
+		$DIALOG --yesno "$MSG" 0 0 || end
 		else
-		MSG="Error. Continue?"
-		$DIALOG --yesno "$MSG" 50 50 || end
+		MSG="`$GETTEXT \"Error:\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
+		$DIALOG --yesno "$MSG" 0 0 || end
 		fi
 		
 	else

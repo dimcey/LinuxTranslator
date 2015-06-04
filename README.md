@@ -16,10 +16,10 @@ Features
 --------
 1) Pooling words from an online dictionary.
 2) gdialog GUI.
-	The program runs when the script "linuxtranslate_ui" is executed.
+The program runs when the script "linuxtranslate_ui" is executed.
 3) Networked client-service implementation
-	Executing "linuxtranslate_ui" will run locally, while executing the command "linuxtranslate_ui --network" will run  the program in the network.
-4) Localization on Macedonian language
-	Executing the command "LC_ALL=mk_MK.UTF-8 linuxtranslate_ui" will run the GUI with Macedonian language.
+Executing "linuxtranslate_ui" will run locally, while executing the command "linuxtranslate_ui --network" will run  the program in the network.
+4) Localization on Macedonian languag
+Executing the command "LC_ALL=mk_MK.UTF-8 linuxtranslate_ui" will run the GUI with Macedonian language.
 
 

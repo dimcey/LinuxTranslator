@@ -1,6 +1,9 @@
 
-msgid "Pick a word and enter his number"
+msgid "Select a word to be translated"
 msgstr "Внесете го бројот на зборот"
+
+msgid "Choose an option"
+msgstr "Изберете опција"
 
 msgid "The Macedonian translation"
 msgstr "Македонскиот превод е"
@@ -10,3 +13,11 @@ msgstr "Продолжи?"
 
 msgid "Error"
 msgstr "Грешка"
+
+msgid "Cancel"
+msgstr "Откажете"
+
+msgid "OK"
+msgstr "Во ред"
+
+

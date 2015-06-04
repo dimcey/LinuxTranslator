@@ -3,6 +3,7 @@
 FILE1=/tmp/linuxtranslate1-$$
 FILE2=/tmp/linuxtranslate2-$$
 FILE3=/tmp/linuxtranslate3-$$
+FILE4=/tmp/linuxtranslate3-$$
 ERROR=/tmp/linuxtranslate-err-$$
 
 HOST=localhost
@@ -20,61 +21,44 @@ end () {
 
 
 helpMsg () {
-	echo "Usage: $0 [ --network [host [port]] | --help ]" 
-	exit -1
-}
-
-helpMsg1 () {
-	echo Type  --help.
+	echo "Usage: $0 [ --network | --help ]" 
 	exit -1
 }
 
 if [ $# -eq 0 ]
 then
-	MODE=local
-elif [ $# -ge 1 ]
+MODE=local
+elif [ $# -eq 1 ]
 then
-	if [ $1 = '--help' ]
+        if [ $1 = '--help' ]
+        then
+                helpMsg
+                exit -1
+        elif [ $1 = '--network' ]
 	then
-		helpMsg
-	elif [ $1 = '--network' ]
-	then
-		MODE=network
-		if [ $# -ge 2 ]
-		then 
-			HOST=$2
-		elif [ $# -ge 3 ]
-		then
-			PORT=$9
-		fi
-	else
-		helpMsg1
-	fi
-else
-	helpMsg1
+                MODE=network
+        fi
+
 fi
 
-#curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | tr '\n' ', ' | tr -d '\n' | tr -d '<*>' > $FILE3
-curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | paste - - - - - - - | tr -d '<*>' > $FILE3
- 
+
 
 while true
 do
-	$DIALOG --inputbox "`cat $FILE3` \\n\\n `$GETTEXT \"Enter the word number listed above\"`" 0 0 2> $FILE1 || end
-	INDEX=`cat $FILE1`
+	#Another way of displaying the words, with --inputbox
+	#$DIALOG --inputbox "`cat $FILE3` \\n\\n `$GETTEXT \"Pick a word and enter his number\"`" 0 0 2> $FILE1 || end
+
+	WORDS=`curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | sed s/'([^)]*)'/''/g | sed s/'<[^)]*>'/''/g | tr '\n' ',' | tr '|' ','`
+	IFS=',' read -a words <<< "$WORDS"
+	$DIALOG whiptail --title "Select a word to be translated" --menu "Choose an option" 20 78 16 \
+	"${words[@]}" 2> $FILE1
+
+        INDEX=`cat $FILE1`
 
 	if [ $MODE = 'local' ]
 	then
-	echo tttt
-	cat $FILE1
-		
+		echo ModeLocal
 		curl -s "http://semes-olla.rhcloud.com/word?`cat $FILE1`&Swadesh/Slavic/Macedonian.py" > $FILE2
-		echo $FILE2
-		echo rrrr
-		cat $FILE2
-		#tmpword="/home/user/Linuxtranslator/translatedword.txt"
-                #word=$(cat "$tmpword")
-                #echo $word
 		if [ -s "$FILE2" ]
 		then
 		MSG="`$GETTEXT \"The Macedonian translation\"` `cat $FILE2`. Continue?"
@@ -84,10 +68,19 @@ do
 		$DIALOG --yesno "$MSG" 0 0 || end
 		fi
 		
-	else
+	elif [ $MODE = 'network' ]
+	then
 		echo ModeNetwork
 		LINUXTRANSLATE="nc $HOST $PORT"
 		echo $INDEX | $LINUXTRANSLATE > $FILE2 2> $ERROR
+		if [ -s "$FILE2" ]
+		then
+		MSG="`$GETTEXT \"The Macedonian translation\"` `cat $FILE2`. Continue?"
+		$DIALOG --yesno "$MSG" 0 0 || end
+		else
+		MSG="`$GETTEXT \"Error:\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
+		$DIALOG --yesno "$MSG" 0 0 || end
+		fi
 	fi
 
 done

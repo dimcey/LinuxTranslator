@@ -50,7 +50,7 @@ do
 
 	WORDS=`curl -s "http://semes-olla.rhcloud.com/words?Swadesh/English.py" | sed s/'([^)]*)'/''/g | sed s/'<[^)]*>'/''/g | tr '\n' ',' | tr '|' ','`
 	IFS=',' read -a words <<< "$WORDS"
-	$DIALOG whiptail --title "Select a word to be translated" --menu "Choose an option" 20 78 16 \
+	$DIALOG --title "Select a word to be translated" --menu "Choose an option" 20 78 16 \
 	"${words[@]}" 2> $FILE1
 
         INDEX=`cat $FILE1`

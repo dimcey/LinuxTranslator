@@ -64,7 +64,7 @@ do
 		MSG="`$GETTEXT \"The Macedonian translation\"` `cat $FILE2`. Continue?"
 		$DIALOG --yesno "$MSG" 0 0 || end
 		else
-		MSG="`$GETTEXT \"Error:\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
+		MSG="`$GETTEXT \"Error\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
 		$DIALOG --yesno "$MSG" 0 0 || end
 		fi
 		
@@ -78,7 +78,7 @@ do
 		MSG="`$GETTEXT \"The Macedonian translation\"` `cat $FILE2`. Continue?"
 		$DIALOG --yesno "$MSG" 0 0 || end
 		else
-		MSG="`$GETTEXT \"Error:\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
+		MSG="`$GETTEXT \"Error\"`\\n\\n`cat $ERROR`\\n\\n`$GETTEXT \"Continue?\"`"
 		$DIALOG --yesno "$MSG" 0 0 || end
 		fi
 	fi

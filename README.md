@@ -5,7 +5,7 @@ The project is developed during a seminar in St. Petersburg, Russia, at ITMO Uni
 
 General description
 -------------------
-The program successfully translated an English word to Macedonian language, using an online Swadesh dictionary (http://semes-olla.rhcloud.com). A script is taking all of the English words from the dictionary and lists them in a gdialog --menu. The user is supposed to click on a word and the translated word will appear. 
+A word translator program developed in shell language, with implemented TUI and GUI. The program successfully translated an English word to Macedonian language, using an online Swadesh dictionary (http://semes-olla.rhcloud.com). A script is taking all of the English words from the dictionary and lists them in a gdialog --menu. The user is supposed to click on a word and the translated word will appear. 
 
 
 Instalation
